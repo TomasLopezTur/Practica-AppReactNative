@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "expo-router";
 import {
   View,
   FlatList,
@@ -6,14 +7,18 @@ import {
   ActivityIndicator,
   Image,
   StyleSheet,
+  Pressable,
 } from "react-native";
 import { getLatestGames } from "../lib/metacritic";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AnimatedGameCard, GameCard } from "./GameCard";
+import { AboutIcon } from "./Icons";
+import { LogoBanner } from "./Logo";
+import { Screen } from "./Screen";
 
-export default function Main() {
+export function Main() {
   const [games, setGames] = useState([]); //userState variable qe caundo cambia de valor se vuelve a renderizar
-  const insets = useSafeAreaInsets();
+  /* const insets = useSafeAreaInsets(); */
 
   useEffect(() => {
     // useEffect cada ves que cambian las dependencias o primera ves qe se renderiza se ejecuta en el caso qe el ultimo [] este vacio
@@ -22,19 +27,7 @@ export default function Main() {
     });
   }, []);
   return (
-    <View
-      style={{
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom,
-        paddingHorizontal: 9,
-      }}
-    >
-      <View style={styles.logoContainer}>
-        <Image
-          source={require("../assets/logo-metacritic.png")}
-          style={styles.logo}
-        />
-      </View>
+    <Screen>
       {games.length == 0 ? (
         <ActivityIndicator color={"green"} size="large" />
       ) : (
@@ -46,20 +39,6 @@ export default function Main() {
           )}
         />
       )}
-    </View>
+    </Screen>
   );
 }
-const styles = StyleSheet.create({
-  logoContainer: {
-    padding: 10, // Espacio alrededor del logo
-    backgroundColor: "#fff", // Fondo blanco para resaltar el logo
-    borderRadius: 16, // Bordes redondeados opcionales
-    marginBottom: 20, // Margen inferior para separar la imagen de la lista
-    alignItems: "center", // Centrar el contenido horizontalmente
-  },
-  logo: {
-    width: 176,
-    height: 40,
-    resizeMode: "contain", // Ajustar la imagen sin distorsionarla
-  },
-});
